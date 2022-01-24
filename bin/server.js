@@ -1,7 +1,14 @@
-const app = require('../app')
+import {mkdir} from 'fs/promises'
+import { app } from "../app";
+import db from "../db/db";
+const PORT = process.env.PORT || 3300;
 
-const PORT = process.env.PORT || 3000
+db.then(() => {
+  app.listen(PORT, async () => {
+    await mkdir(process.env.UPLOAD_DIR, {recursive: true})
+    console.log(`Server running. Use our API on port: ${PORT}`);
+  });
+}).catch((err) => {
+  console.log(`Server not running! Error: ${err.massage}`);
 
-app.listen(PORT, () => {
-  console.log(`Server running. Use our API on port: ${PORT}`)
 })
