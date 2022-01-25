@@ -1,24 +1,15 @@
-const express = require('express')
-const router = express.Router()
+import { Router } from "express";
+import controllers from "./controllers/contacts/index"
+import { validateCreate, validateUpdate,validateFavoriteUpdate } from "../../midllewares/validation/contactValidation"
+import guard from "../../midllewares/guard";
 
-router.get('/', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+const router = Router();
 
-router.get('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+router.get("/",guard, controllers.getContacts);
+router.get("/:id",guard, controllers.getContactById);
+router.delete("/:id",guard,controllers.removeContactById);
+router.post("/",[guard, validateCreate], controllers.postNewContact);
+router.put("/:id",[guard, validateUpdate], controllers.updateContactById);
+router.patch("/:id/favorite",[guard, validateFavoriteUpdate], controllers.updateContactById);
 
-router.post('/', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
-
-router.delete('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
-
-router.patch('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
-
-module.exports = router
+export default router;
