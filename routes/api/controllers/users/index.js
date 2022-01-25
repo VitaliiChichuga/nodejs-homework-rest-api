@@ -1,3 +1,5 @@
 import { uploadAvatar } from "./uploadAvatar";
+import { verifyUser } from "./verifyUser"
+import {repeatEmailForVerifyUser} from "./repeatEmailForVerifyUser"
 
-export {uploadAvatar}
+export default {uploadAvatar, verifyUser, repeatEmailForVerifyUser}

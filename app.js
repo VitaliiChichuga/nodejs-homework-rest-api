@@ -18,7 +18,9 @@ app.use(cors())
 app.use(express.json({limit: LIMIT_JSON}))
 
 app.use('/api/auth', authRouter)
+
 app.use('/api/users', usersRouter)
+
 app.use('/api/contacts', contactsRouter)
 
 app.use((req, res) => {

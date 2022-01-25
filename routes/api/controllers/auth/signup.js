@@ -1,4 +1,4 @@
-// import authService from "../../../../service/auth"
+import { EmailService, EmailSender } from "../../../../service/email";
 import authService from "../../../../service/auth";
 import { HttpCode } from "../../../../lib/constants";
 
@@ -12,10 +12,20 @@ export const signup = async (req, res, next) => {
       message: "Email is already exist",
     });
   }
-  const data = await authService.create(req.body);
-  res.status(HttpCode.CREATE).json({
+  const userData = await authService.create(req.body);
+  const emailService = new EmailService(
+    process.env.NODE_ENV,
+    new EmailSender()
+  );
+  
+  const isSend = await emailService.sendVerifyEmail(
+    email,
+    userData.verifyToken
+  );
+   res.status(HttpCode.CREATE).json({
     status: "success",
     code: HttpCode.CREATE,
-    data,
+    data: { ...userData, isSendVerifyToken: !!isSend },
   });
+  delete userData.verifyToken;
 };
